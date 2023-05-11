@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="exo.js"></script>
+    <title>DEVOIR JAVASCRIPT</title>
+    <script>
+
+//fonction pour crée un générateur de mots de passe complexes
+function generatePassword(length) 
+{
+    var charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]\:;?><,./-=";
+    var password = "";
+    for (var i = 0; i < length; i++) 
+    {
+      var randomIndex = Math.floor(Math.random() * charset.length);
+      password += charset[randomIndex];
+    }
+    document.getElementById("password").value=password
+    return password;
+}
+function convertTemperature(temp, unit) 
+{
+    if (unit === "C") 
+    {
+    // Convertir les degrés Celsius en Fahrenheit
+    var fahrenheit = temp * 9 / 5 + 32;
+    return fahrenheit.toFixed(2) + " °F";
+    } 
+    else if (unit === "F") 
+    {
+    // Convertir les degrés Fahrenheit en Celsius
+    var celsius = (temp - 32) * 5 / 9;
+    return celsius.toFixed(2) + " °C";
+    } 
+    else 
+    {
+    // Sinon retourner un message d'erreur
+    return "Unité non reconnue";
+    }
+}
+    </script>
+
+  </head>
+  <body>
+    <h1>Devoir Rita HAIDAR</h1>
+    <main>
+      <section>
+    <h3>EX1: Générateur de mot de passe</h3>
+      </section>
+    </main>
+    <input type="text" id="password" />
+    <button onclick="generatePassword(12)">Générer un mot de passe aléatoire</button>
+
+    <h3>EX2: Convertisseur de température</h3>
+    <label for="tempInput">Température :</label>
+    <input type="number" id="tempInput" name="tempInput"><br>
+
+    <label for="unitInput">Unité :</label>
+    <select id="unitInput" name="unitInput">
+      <option value="C">°C</option>
+      <option value="F">°F</option>
+    </select><br>
+
+    <button onclick="convert()">Convertir</button>
+
+    <p id="result"></p>
+
+    <script>
+
+//fonction pour récupérer les données rentrées par l'utilisateur
+function convert() 
+{
+    var temp = document.getElementById("tempInput").value;
+    var unit = document.getElementById("unitInput").value;
+
+    //récupérer la fonction convertTemperature pour convertir les données entrées par l'utilisateur
+    var result = convertTemperature(temp, unit);
+    document.getElementById("result").innerHTML = result;
+}
+    </script>
+
+    <h3>EX3: Générateur de citations dans une Pop-up/Modal</h3>
+    <button onclick="generateCitations()">Générer une citation</button>
+    <button onclick="closePopup()">Fermer</button>
+
+<script>
+  //fonction qui génère les citations du tableau 
+  function generateCitations() {
+    const quotes = [
+      "Le savoir est la seule chose qui s'accroît quand on le partage. -Socrate",
+      "La vie est un mystère qu'il faut vivre, et non un problème à résoudre. -Gandhi",
+      "La sagesse, c'est d'avoir des rêves suffisamment grands pour ne pas les perdre de vue lorsqu'on les poursuit. -Oscar Wilde",
+      "La plus grande gloire n'est pas de ne jamais tomber, mais de se relever à chaque chute. -Confucius",
+      "Il faut viser la lune, parce qu'au moins, si vous échouez, vous finissez dans les étoiles. -Oscar Wilde",
+    ];
+     
+    //crée une nouvelle citation en sélectionnant aléatoirement une citation dans le tableau  
+    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+    const popup = document.createElement("div");
+    const quoteText = document.createTextNode(randomQuote);
+    popup.appendChild(quoteText);
+    popup.classList.add("popup");
+    document.body.appendChild(popup);
+  }
+  
+  //fonction pour fermer tout le pop-up de citation    
+function closePopup() 
+{
+    const popups = document.querySelectorAll(".popup");
+    popups.forEach((popup) => {
+      popup.style.display = "none";
+    });
+}
+</script>
+
+
+    <h3>EX4: Création d'un DarkMode</h3>
+    <button onclick="activateDarkMode()">Activate Dark Mode</button>
+    <button onclick="desactivateDarkMode()">Desactivate Dark Mode</button>
+
+    <script>
+// fonction pour activer le mode sombre
+function activateDarkMode() 
+{
+    document.body.classList.add('dark-mode');
+}  
+//fonction pour désactiver le mode sombre
+function desactivateDarkMode() 
+{
+    document.body.classList.remove('dark-mode');
+}
+    </script>
+    <style>
+        /* CSS du mode sombre */
+        body.dark-mode {
+            background-color: #1c1c1c;
+            color: #ffffff;
+          }
+          
+          .dark-mode .container {
+            background-color: #2b2b2b;
+            color: #ffffff;
+          }
+          
+          .dark-mode h1, .dark-mode h2, .dark-mode h3, .dark-mode h4, .dark-mode h5, .dark-mode h6 {
+            color: #ffffff;
+          }
+          
+          .dark-mode a {
+            color: #ffffff;
+          }
+          
+          .dark-mode button {
+            background-color: #ffffff;
+            color: #000000;
+          }    
+     
+    </style>
+
+    <h3>EX5: Création d'un menu Burger (en haut à droite)</h3>
+
+        <style>
+            /* CSS pour le burger menu */
+		#burger-menu {
+			display: none;
+			position: fixed;
+			top: 0;
+			right: 0;
+			width: 200px;
+			height: 100%;
+			background-color: #333;
+			z-index: 1;
+			overflow-x: hidden;
+			padding-top: 60px;
+			transition: 0.5s;
+		}
+
+		#burger-menu a {
+			padding: 8px 8px 8px 32px;
+			text-decoration: none;
+			font-size: 25px;
+			color: #f2f2f2;
+			display: block;
+			transition: 0.3s;
+		}
+
+		#burger-menu a:hover {
+			color: #FFD700;
+		}
+
+		#burger-menu .close-btn {
+			position: absolute;
+			top: 0;
+			right: 10px;
+			font-size: 36px;
+			margin-left: 50px;
+			cursor: pointer;
+		}
+
+		.burger-icon {
+			display: block;
+			position: fixed;
+			top: 20px;
+			right: 20px;
+			cursor: pointer;
+			z-index: 2;
+		}
+
+		.burger-icon span {
+			display: block;
+			width: 30px;
+			height: 3px;
+			margin-bottom: 5px;
+			background-color: #333;
+			transition: transform 0.3s, opacity 0.3s;
+		}
+
+		.burger-icon:hover span {
+			transform: scaleX(1.1);
+			opacity: 0.7;
+		}
+
+		.burger-icon span:nth-child(2) {
+			transform-origin: center;
+		}
+
+		.burger-icon.open span:nth-child(1) {
+			transform: translateY(8px) rotate(45deg);
+		}
+
+		.burger-icon.open span:nth-child(2) {
+			opacity: 0;
+		}
+
+		.burger-icon.open span:nth-child(3) {
+			transform: translateY(-8px) rotate(-45deg);
+		}
+        </style>
+        <!-- Afficher l'icon du Burger menu -->
+	<div class="burger-icon" onclick="toggleMenu()">
+		<span></span>
+		<span></span>
+		<span></span>
+	</div>
+
+	<!--Afficher le Burger menu -->
+	<div id="burger-menu">
+		<a href="#">Accueil</a>
+		<a href="#">A propos</a>
+		<a href="#">Services</a>
+		<a href="#">Contact</a>
+		<span class="close-btn" onclick="toggleMenu()">&times;</span>
+	</div>
+
+    <script>
+//fonction du Burger menu
+function toggleMenu() 
+{
+	var menu = document.getElementById("burger-menu");
+	var icon = document.querySelector(".burger-icon");
+
+        //récupération du css du menu 
+		if (menu.style.display === "block") 
+        {
+			menu.style.display = "none";
+			icon.classList.remove("open");
+		} 
+            else 
+            {
+				menu.style.display = "block";
+				icon.classList.add("open");
+			}
+}
+    </script>
+  </body>
+</html>
+
