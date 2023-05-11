@@ -8,43 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="exo.js"></script>
     <title>DEVOIR JAVASCRIPT</title>
-    <script>
-
-//fonction pour crée un générateur de mots de passe complexes
-function generatePassword(length) 
-{
-    var charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]\:;?><,./-=";
-    var password = "";
-    for (var i = 0; i < length; i++) 
-    {
-      var randomIndex = Math.floor(Math.random() * charset.length);
-      password += charset[randomIndex];
-    }
-    document.getElementById("password").value=password
-    return password;
-}
-function convertTemperature(temp, unit) 
-{
-    if (unit === "C") 
-    {
-    // Convertir les degrés Celsius en Fahrenheit
-    var fahrenheit = temp * 9 / 5 + 32;
-    return fahrenheit.toFixed(2) + " °F";
-    } 
-    else if (unit === "F") 
-    {
-    // Convertir les degrés Fahrenheit en Celsius
-    var celsius = (temp - 32) * 5 / 9;
-    return celsius.toFixed(2) + " °C";
-    } 
-    else 
-    {
-    // Sinon retourner un message d'erreur
-    return "Unité non reconnue";
-    }
-}
-    </script>
-
   </head>
   <body>
     <h1>Devoir Rita HAIDAR</h1>
@@ -55,6 +18,19 @@ function convertTemperature(temp, unit)
     </main>
     <input type="text" id="password" />
     <button onclick="generatePassword(12)">Générer un mot de passe aléatoire</button>
+
+    <script>
+    //fonction pour crée un générateur de mots de passe complexes
+function generatePassword(length) {
+    var charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]\:;?><,./-=";
+    for (var password = "", i = 0; i < length; i++) {
+      password += charset[Math.floor(Math.random() * charset.length)];
+    }
+    document.getElementById("password").value = password;
+    return password;
+  }  
+  
+</script>
 
     <h3>EX2: Convertisseur de température</h3>
     <label for="tempInput">Température :</label>
@@ -72,6 +48,13 @@ function convertTemperature(temp, unit)
 
     <script>
 
+//fonction pour convertir les degrés Celsius en degrés Farhenheit et inversement         
+function convertTemperature(temp, unit) 
+{
+    var result = unit === "C" ? temp * 9 / 5 + 32 : unit === "F" ? (temp - 32) * 5 / 9 : "Unité non reconnue";
+    return typeof result === "number" ? result.toFixed(0) + " °" + (unit === "C" ? "F" : "C") : result;
+}
+
 //fonction pour récupérer les données rentrées par l'utilisateur
 function convert() 
 {
@@ -85,56 +68,95 @@ function convert()
     </script>
 
     <h3>EX3: Générateur de citations dans une Pop-up/Modal</h3>
-    <button onclick="generateCitations()">Générer une citation</button>
-    <button onclick="closePopup()">Fermer</button>
+<button onclick="openModal()">Générer une citation</button>
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <p id="citation"></p>
+  </div>
+</div>
 
-<script>
-  //fonction qui génère les citations du tableau 
-  function generateCitations() {
-    const quotes = [
-      "Le savoir est la seule chose qui s'accroît quand on le partage. -Socrate",
-      "La vie est un mystère qu'il faut vivre, et non un problème à résoudre. -Gandhi",
-      "La sagesse, c'est d'avoir des rêves suffisamment grands pour ne pas les perdre de vue lorsqu'on les poursuit. -Oscar Wilde",
-      "La plus grande gloire n'est pas de ne jamais tomber, mais de se relever à chaque chute. -Confucius",
-      "Il faut viser la lune, parce qu'au moins, si vous échouez, vous finissez dans les étoiles. -Oscar Wilde",
-    ];
-     
-    //crée une nouvelle citation en sélectionnant aléatoirement une citation dans le tableau  
-    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-    const popup = document.createElement("div");
-    const quoteText = document.createTextNode(randomQuote);
-    popup.appendChild(quoteText);
-    popup.classList.add("popup");
-    document.body.appendChild(popup);
+<style>
+
+    /* CSS de la Pop-up/Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
   }
   
-  //fonction pour fermer tout le pop-up de citation    
-function closePopup() 
-{
-    const popups = document.querySelectorAll(".popup");
-    popups.forEach((popup) => {
-      popup.style.display = "none";
-    });
-}
-</script>
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+</style>
 
+<script>
+  
+    // Tableau de citations
+    const citations = 
+[
+    "La vie est un mystère qu'il faut vivre, et non un problème à résoudre. - Gandhi",
+    "Le plus grand risque est de ne prendre aucun risque. - Mark Zuckerberg",
+    "Le succès n'est pas la clé du bonheur. Le bonheur est la clé du succès. Si vous aimez ce que vous faites, vous réussirez. - Albert Schweitzer",
+    "La seule façon de faire du bon travail est d'aimer ce que vous faites. Si vous n'avez pas encore trouvé, continuez à chercher. - Steve Jobs",
+    "La simplicité est la sophistication suprême. - Léonard de Vinci",
+    "La vie c'est comme une bicyclette, il faut avancer pour ne pas perdre l'équilibre. - Albert Einstein",
+    "La seule limite à notre épanouissement de demain sera nos doutes d'aujourd'hui. - Franklin Roosevelt"
+];
+  
+// Fonction pour générer une citation aléatoire et l'afficher dans la Pop-up/Modal
+function generateCitation() 
+{
+    openModal();
+}
+  
+// Fonction pour ouvrir la Pop-up/Modal
+function openModal() 
+{
+    document.getElementById("myModal").style.display = "block";
+    const citation = citations[Math.floor(Math.random() * citations.length)];
+    document.getElementById("citation").innerHTML = citation;
+}
+
+  const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+  
+// Fonction pour fermer la Pop-up/Modal
+function closeModal() 
+{
+    document.getElementById("myModal").style.display = "none";
+}
+  
+</script>
 
     <h3>EX4: Création d'un DarkMode</h3>
     <button onclick="activateDarkMode()">Activate Dark Mode</button>
     <button onclick="desactivateDarkMode()">Desactivate Dark Mode</button>
 
     <script>
+
 // fonction pour activer le mode sombre
 function activateDarkMode() 
 {
     document.body.classList.add('dark-mode');
-}  
+} 
+
 //fonction pour désactiver le mode sombre
 function desactivateDarkMode() 
 {
     document.body.classList.remove('dark-mode');
 }
     </script>
+
     <style>
         /* CSS du mode sombre */
         body.dark-mode {
@@ -163,6 +185,23 @@ function desactivateDarkMode()
     </style>
 
     <h3>EX5: Création d'un menu Burger (en haut à droite)</h3>
+
+    <!-- Afficher l'icon du Burger menu -->
+	<div class="burger-icon" onclick="toggleMenu()">
+		<span></span>
+		<span></span>
+		<span></span>
+	</div>
+
+	<!--Afficher le Burger menu -->
+	<div id="burger-menu">
+		<a href="#">Accueil</a>
+		<a href="#">A propos</a>
+		<a href="#">Services</a>
+		<a href="#">Contact</a>
+		<span class="close-btn" onclick="toggleMenu()">&times;</span>
+	</div>
+
 
         <style>
             /* CSS pour le burger menu */
@@ -241,41 +280,16 @@ function desactivateDarkMode()
 			transform: translateY(-8px) rotate(-45deg);
 		}
         </style>
-        <!-- Afficher l'icon du Burger menu -->
-	<div class="burger-icon" onclick="toggleMenu()">
-		<span></span>
-		<span></span>
-		<span></span>
-	</div>
-
-	<!--Afficher le Burger menu -->
-	<div id="burger-menu">
-		<a href="#">Accueil</a>
-		<a href="#">A propos</a>
-		<a href="#">Services</a>
-		<a href="#">Contact</a>
-		<span class="close-btn" onclick="toggleMenu()">&times;</span>
-	</div>
 
     <script>
-//fonction du Burger menu
-function toggleMenu() 
-{
-	var menu = document.getElementById("burger-menu");
-	var icon = document.querySelector(".burger-icon");
 
-        //récupération du css du menu 
-		if (menu.style.display === "block") 
-        {
-			menu.style.display = "none";
-			icon.classList.remove("open");
-		} 
-            else 
-            {
-				menu.style.display = "block";
-				icon.classList.add("open");
-			}
+//fonction du Burger menu pour cacher le menu lorsqu'on n'a pas cliqué dessus
+function toggleMenu() {
+    var menu = document.getElementById("burger-menu");
+    var icon = document.querySelector(".burger-icon");
+    menu.style.display === "block" ? (menu.style.display = "none", icon.classList.remove("open")) : (menu.style.display = "block", icon.classList.add("open"));
 }
+
     </script>
   </body>
 </html>
